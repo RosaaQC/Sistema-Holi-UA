@@ -653,7 +653,7 @@ elif menu == "Predicción":
         st.warning("La librería **Prophet** no está instalada todavía. Para instalarla ejecuta en la terminal:")
         st.code("pip install prophet", language="bash")
         if st.button("Verificar de nuevo / Recargar app"):
-            st.experimental_rerun()
+            st.rerun()
     else:
         productos_lista = ["Todos los productos"] + sorted(df["PRODUCTO"].unique().tolist())
 
