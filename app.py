@@ -336,16 +336,6 @@ if not st.session_state.iniciado:
 # ================================================================
 # TÍTULO PRINCIPAL
 # ================================================================
-st.markdown(
-    """
-    <div class='hero-card'>
-      <div class='hero-title'>Sistema de Predicción de Demanda</div>
-      <div class='hero-subtitle'>Supermercados Holi</div>
-      <div class='hero-note'>Análisis inteligente, cálido y detallado para tu negocio.</div>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
 st.markdown("##### Análisis Inteligente basado en Big Data - Lima 2025")
 st.markdown("---")
 
