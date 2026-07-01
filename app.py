@@ -16,6 +16,7 @@ warnings.filterwarnings("ignore")
 
 BACKGROUND_IMAGE_PATH = "modules/holi_fondo.png"
 LOGO_IMAGE_PATH = "modules/holilogo.png"
+PERSONAJE_IMAGE_PATH = "modules/personajeloguin.png"
 
 # Importar módulos propios
 from modules.etl import (
@@ -69,11 +70,12 @@ def get_base64_image(path):
 # ================================================================
 image_base64 = get_base64_image(BACKGROUND_IMAGE_PATH)
 logo_base64 = get_base64_image(LOGO_IMAGE_PATH)
+personaje_base64 = get_base64_image(PERSONAJE_IMAGE_PATH)
 # Construir el CSS del fondo dinámicamente con la imagen real
 if image_base64:
     fondo_estilo = f"""
         background:
-            linear-gradient(135deg, rgba(255, 240, 220, 0.85), rgba(255, 220, 180, 0.85)),
+            linear-gradient(135deg, rgba(255, 240, 220, 0.35), rgba(255, 220, 180, 0.35)),
             url("data:image/png;base64,{image_base64}");
         background-size: cover;
         background-position: center;
@@ -230,6 +232,106 @@ if logo_base64:
         """,
         unsafe_allow_html=True,
     )
+
+# ================================================================
+# PANTALLA DE BIENVENIDA (SPLASH)
+# ================================================================
+if "iniciado" not in st.session_state:
+    st.session_state.iniciado = False
+
+if not st.session_state.iniciado:
+    st.markdown(
+        """
+        <style>
+            .block-container {
+                background: transparent !important;
+                backdrop-filter: none !important;
+                box-shadow: none !important;
+            }
+            @keyframes flotar {
+                0%   { transform: translateY(0px); }
+                50%  { transform: translateY(-16px); }
+                100% { transform: translateY(0px); }
+            }
+            .welcome-wrap {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                min-height: 78vh;
+                text-align: center;
+            }
+            .welcome-floating {
+                animation: flotar 3.6s ease-in-out infinite;
+            }
+            .welcome-title {
+                font-size: 8.5rem;
+                font-weight: 800;
+                color: #7c3d14;
+                margin: 0;
+                letter-spacing: 0.03em;
+                font-family: Georgia, serif;
+                text-shadow: 0 6px 22px rgba(0, 0, 0, 0.28);
+            }
+            .welcome-subtitle {
+                font-size: 4.5rem;
+                margin-top: 10px;
+                color: #d66815;
+                font-style: italic;
+                font-family: 'Segoe Script', cursive;
+                text-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            }
+            .welcome-note {
+                margin-top: 20px;
+                display: inline-block;
+                padding: 12px 22px;
+                background: rgba(255, 255, 255, 0.45);
+                backdrop-filter: blur(6px);
+                color: #6d3b1a;
+                border-radius: 22px;
+                border: 1px solid rgba(255, 255, 255, 0.5);
+                font-size: 2.1rem;
+            }
+            .welcome-personaje {
+                margin-top: 22px;
+                max-height: 380px;
+                width: auto;
+                filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.3));
+            }
+            .stButton > button {
+                background: linear-gradient(135deg, #b5e07d, #8bc34a) !important;
+                font-size: 6rem !important;
+                padding: 26px 0 !important;
+                border-radius: 999px !important;
+                width: 100% !important;
+                margin-top: -30px !important;
+                animation: flotar 3.6s ease-in-out infinite;
+                box-shadow: 0 12px 30px rgba(139, 195, 74, 0.5) !important;
+            }
+            .stButton > button:hover {
+                box-shadow: 0 14px 34px rgba(139, 195, 74, 0.65) !important;
+            }
+        </style>
+        <div class='welcome-wrap'>
+            <div class='welcome-floating'>
+                <div class='welcome-title'>Bienvenido a Holi</div>
+                <div class='welcome-subtitle'>Sistema de Predicción de Demanda</div>
+                <div class='welcome-note'>Análisis inteligente, cálido y detallado para tu negocio.</div>
+            </div>
+        """
+        + (f"<img class='welcome-personaje' src='data:image/png;base64,{personaje_base64}' />" if personaje_base64 else "")
+        + """
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    _, col_boton, _ = st.columns([2, 1.4, 2])
+    with col_boton:
+        if st.button("Comenzar", use_container_width=True):
+            st.session_state.iniciado = True
+            st.rerun()
+    st.stop()
+
 
 # ================================================================
 # TÍTULO PRINCIPAL
